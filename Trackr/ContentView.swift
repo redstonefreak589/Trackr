@@ -13,21 +13,21 @@ struct ContentView: View {
  
     var body: some View {
         TabView(selection: $selection){
-            Text("First View")
+            AllTablesView()
                 .font(.title)
                 .tabItem {
                     VStack {
-                        Image("first")
-                        Text("First")
+                        Image(systemName: "list.dash")
+                        Text("All Tables")
                     }
                 }
                 .tag(0)
-            Text("Second View")
+            TableStatusView()
                 .font(.title)
                 .tabItem {
                     VStack {
-                        Image("second")
-                        Text("Second")
+                        Image(systemName: "clock")
+                        Text("Table Status")
                     }
                 }
                 .tag(1)
