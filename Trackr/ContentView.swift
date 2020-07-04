@@ -14,7 +14,6 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $selection){
             AllTablesView()
-                .font(.title)
                 .tabItem {
                     VStack {
                         Image(systemName: "list.dash")

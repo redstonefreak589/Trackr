@@ -7,10 +7,39 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct AllTablesView: View {
+    
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest(fetchRequest: Table.getAllTables()) var tables: FetchedResults<Table>
+    
+    @State private var newTable = ""
+    
     var body: some View {
-        Text("Hello, World!")
+        NavigationView {
+            List(/*@START_MENU_TOKEN@*/0 ..< 5/*@END_MENU_TOKEN@*/) { item in
+                Text("Hello World!")
+            }
+            .navigationBarTitle("All Tables")
+            .navigationBarItems(trailing:
+                HStack {
+                    Button(action: {
+                        print("trash pressed")
+                    }) {
+                        Image(systemName: "trash")
+                            .font(.system(size: 21))
+                    }
+                    .padding(.trailing, 10.0)
+                    
+                    Button(action: {
+                        print("button pressed")
+                    }){
+                        Image(systemName: "plus")
+                            .font(.system(size: 21))
+                    }
+              })
+        }
     }
 }
 
