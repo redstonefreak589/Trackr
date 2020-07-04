@@ -24,6 +24,5 @@ extension Table {
         request.sortDescriptors = [sortDescriptor]
         
         return request
-        
     }
 }

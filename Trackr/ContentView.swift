@@ -12,25 +12,7 @@ struct ContentView: View {
     @State private var selection = 0
  
     var body: some View {
-        TabView(selection: $selection){
-            AllTablesView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "list.dash")
-                        Text("All Tables")
-                    }
-                }
-                .tag(0)
-            TableStatusView()
-                .font(.title)
-                .tabItem {
-                    VStack {
-                        Image(systemName: "clock")
-                        Text("Table Status")
-                    }
-                }
-                .tag(1)
-        }
+        AllTablesView()
     }
 }
 
