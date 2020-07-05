@@ -18,14 +18,18 @@ struct AllTablesView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(fetchRequest: Table.getAllTables()) var tables: FetchedResults<Table>
     
+    @State private var tableTapped: Table = Table()
+    @State private var isModal = false
+    
     var body: some View {
         NavigationView {
             List {
                 ForEach(self.tables) { table in
                     tableCellView(tableNumber: table.number, clean: table.clean, inUse: table.inUse)
                         .onTapGesture {
-                            //NavigationLink(destination: TableStatusView(table: table))
-                        }
+                            self.tableTapped = table
+                            print("tapped")
+                    }
                 }
                 .onDelete { indexSet in
                     let deletedTable = self.tables[indexSet.first!]
@@ -37,6 +41,7 @@ struct AllTablesView: View {
                         print(error)
                     }
                 }
+                
             }
             .navigationBarTitle("All Tables")
             .navigationBarItems(leading: EditButton(), trailing:
