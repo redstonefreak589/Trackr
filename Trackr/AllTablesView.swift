@@ -19,6 +19,7 @@ struct AllTablesView: View {
     @FetchRequest(fetchRequest: Table.getAllTables()) var tables: FetchedResults<Table>
     
     @State private var tableTapped: Table = Table()
+    
     @State private var isModal = false
     
     var body: some View {
@@ -144,15 +145,20 @@ struct tableCellView: View {
     
     //Create view
     var body: some View {
-        VStack (alignment: .leading){
-            Text(String(tableNumber))
-                .font(.headline)
-            HStack {
-                Text(clean ? "Clean: Yes" : "Clean: No")
-                    .font(.caption)
-                Text(inUse ? "In Use: Yes" : "In Use: No")
-                    .font(.caption )
+        HStack {
+            VStack (alignment: .leading){
+                Text(String(tableNumber))
+                    .font(.headline)
+                HStack {
+                    Text(clean ? "Clean: Yes" : "Clean: No")
+                        .font(.caption)
+                    Text(inUse ? "In Use: Yes" : "In Use: No")
+                        .font(.caption )
+                }
             }
+            Spacer()
+            Image(systemName: "info.circle")
+                .foregroundColor(.blue)
         }
     }
 }
