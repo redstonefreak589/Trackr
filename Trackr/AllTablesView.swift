@@ -28,6 +28,7 @@ struct AllTablesView: View {
                     tableCellView(tableNumber: table.number, clean: table.clean, inUse: table.inUse)
                         .onTapGesture {
                             self.tableTapped = table
+                            self.isModal = true
                             print("tapped")
                     }
                 }
@@ -40,6 +41,10 @@ struct AllTablesView: View {
                     } catch {
                         print(error)
                     }
+                }
+                .sheet(isPresented: $isModal){
+                    TableStatusView(table: self.tableTapped)
+                        .environment(\.managedObjectContext, self.managedObjectContext)
                 }
                 
             }
