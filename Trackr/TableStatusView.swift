@@ -15,20 +15,18 @@ struct TableStatusView: View {
     @State var table: Table
     
     var body: some View {
-        VStack {
-            Form {
-                Section {
-                    Text("Table \(table.number)")
-                }.padding(.all, 10.0)
+        Form {
+            Section {
+                Text("Table \(table.number)")
+            }
+            
+            Section {
+                Toggle(isOn: $table.inUse) {
+                    Text("In Use")
+                }
                 
-                Section {
-                    Toggle(isOn: $table.inUse) {
-                        Text("In Use")
-                    }.padding(.all, 10.0)
-                    
-                    Toggle (isOn: $table.clean) {
-                        Text("Clean")
-                    }.padding(.all, 10.0)
+                Toggle (isOn: $table.clean) {
+                    Text("Clean")
                 }
             }
         }

@@ -15,47 +15,29 @@ private var currentTableNumber: Int16 = 0
 //Includes button actions, list view, and some CoreData code
 struct AllTablesView: View {
     
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @FetchRequest(fetchRequest: Table.getAllTables()) var tables: FetchedResults<Table>
-    
-    @State private var tableTapped: Table = Table()
-    
-    @State private var isModal = false
-    
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(self.tables) { table in
-                    tableCellView(tableNumber: table.number, clean: table.clean, inUse: table.inUse)
-                        .onTapGesture {
-                            self.tableTapped = table
-                            self.isModal = true
-                            print("tapped")
-                    }
+        //Create a tab view
+        TabView {
+            
+            //Create the first tab item
+            tableNavigationView()
+            .tabItem {
+                //Make the tab image on the bottom
+                VStack {
+                    Image(systemName: "list.dash")
+                    Text("All Tables")
                 }
-                .onDelete { indexSet in
-                    let deletedTable = self.tables[indexSet.first!]
-                    self.managedObjectContext.delete(deletedTable)
-                    
-                    do {
-                        try self.managedObjectContext.save()
-                    } catch {
-                        print(error)
-                    }
+            }.tag(1)
+            
+            //Create the second tab item (Currently a place holder)
+            Text("Wait List")
+            .tabItem {
+                //Make the tab image on the bottom
+                VStack {
+                    Image(systemName: "clock")
+                    Text("Wait List")
                 }
-                .sheet(isPresented: $isModal){
-                    TableStatusView(table: self.tableTapped)
-                        .environment(\.managedObjectContext, self.managedObjectContext)
-                }
-                
-            }
-            .navigationBarTitle("All Tables")
-            .navigationBarItems(leading: EditButton(), trailing:
-                HStack {
-                    DeleteAllTablesButton()
-                    
-                    AddTableButton()
-            })
+            }.tag(2)
         }
     }
 }
@@ -72,6 +54,7 @@ struct AddTableButton: View {
     var body: some View {
         //Create a button that will allow us to add tables when we tap it
         Button(action: {
+                //Create a new table
                 let table = Table(context: self.managedObjectContext)
                 table.number = self.newTable + currentTableNumber
                 table.clean = true
@@ -159,6 +142,48 @@ struct tableCellView: View {
             Spacer()
             Image(systemName: "info.circle")
                 .foregroundColor(.blue)
+        }
+    }
+}
+
+struct tableNavigationView: View {
+    
+    //Setup environment for accessing CoreData database
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest(fetchRequest: Table.getAllTables()) var tables: FetchedResults<Table>
+    
+    var body: some View {
+        
+        //Creat the views
+        NavigationView {
+            List {
+                
+                //For every object in the table vector, create a NavigationLink with a tableCellView as the label
+                ForEach(self.tables) { table in
+                    NavigationLink(destination: TableStatusView(table: table)) {
+                        tableCellView(tableNumber: table.number, clean: table.clean, inUse: table.inUse)
+                    }
+                }
+                //On a swipe to delete action, delete the table at that specific index
+                .onDelete { indexSet in
+                    let deletedTable = self.tables[indexSet.first!]
+                    self.managedObjectContext.delete(deletedTable)
+                    
+                    do {
+                        try self.managedObjectContext.save()
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+            //Set a navigation bar title, create a leading Edit Button and a trailing HStack containing two buttons
+            .navigationBarTitle("All Tables")
+            .navigationBarItems(leading: EditButton(), trailing:
+                HStack {
+                    DeleteAllTablesButton()
+                    
+                    AddTableButton()
+            })
         }
     }
 }
