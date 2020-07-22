@@ -11,14 +11,12 @@ jobs:
     name: Build
     runs-on: macOS-latest
 
-    strategy:
-      matrix:
-        destination: ['platform=iOS Simulator,OS=13.6,name=iPhone 11']
-        xcode: ['/Applications/Xcode.app/Contents/Developer']
-
     steps:
+    - name: Checkout repository
     - uses: actions/checkout@v2
+    - name: Force XCode 11.6
+      run: sudo xcode-select -switch /Applications/Xcode_11.6.app
     - name: Build
-      run: bundle exec fastlane scan --destination "${destination}" --scheme "YOUR-SCHEME"
+      run: swift buid -v
     - name: Run tests
       run: swift test -v
