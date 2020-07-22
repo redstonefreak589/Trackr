@@ -14,9 +14,5 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    - name: Force XCode 11.6
-      run: sudo xcode-select -switch /Applications/Xcode.app
     - name: Build
       run: swift buid -v
-    - name: Run tests
-      run: swift test -v
