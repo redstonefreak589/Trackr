@@ -60,6 +60,7 @@ struct AddTableButton: View {
                 table.clean = true
                 table.inUse = false
                 
+                //Save managed object context
                 do {
                     try self.managedObjectContext.save()
                 } catch {
